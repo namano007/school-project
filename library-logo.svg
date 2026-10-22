@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 256" role="img" aria-labelledby="title desc">
+  <title id="title">My Library</title>
+  <desc id="desc">White stacked pages and the words My Library</desc>
+  <rect width="352" height="256" fill="#000"/>
+  <g fill="#f7f7f7">
+    <path d="M70 82 164 74 151 166 52 174Z"/>
+    <path d="m78 70 94-8-8 19-91 8Z"/>
+    <path d="m62 178 91-12-5 16-88 14Z"/>
+    <path d="m86 204 70-12-4 10-65 14Z"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="800" fill="#fff" stroke="#e07a29" stroke-width="1.5" paint-order="stroke">
+    <text x="122" y="107">MY</text>
+    <text x="122" y="151">LIBRARY</text>
+  </g>
+</svg>

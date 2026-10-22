@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Library — User Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="user.css" />
+  </head>
+  <body>
+    <section class="user-auth-screen" id="user-auth-screen">
+      <div class="user-auth-card">
+        <div class="auth-logo" aria-label="My Library logo">
+          <img src="library-logo.svg" alt="My Library logo" />
+        </div>
+
+        <div class="auth-heading">
+          <span class="auth-kicker">My library</span>
+          <h1 id="user-auth-title">Welcome back</h1>
+          <p id="user-auth-subtitle">Sign in to borrow books and track your reading journey.</p>
+        </div>
+
+        <div class="auth-tabs" role="tablist" aria-label="Reader access">
+          <button class="auth-tab active" id="user-login-tab" type="button">Log in</button>
+          <button class="auth-tab" id="user-create-tab" type="button">Create account</button>
+        </div>
+
+        <form id="user-auth-form">
+          <div class="field user-auth-name-field" id="user-auth-name-field">
+            <label for="user-auth-name">Full name</label>
+            <input id="user-auth-name" type="text" autocomplete="name" placeholder="e.g. Anna Kariuki" />
+          </div>
+
+          <div class="field user-auth-username-field" id="user-auth-username-field">
+            <label for="user-auth-username">Username</label>
+            <input id="user-auth-username" type="text" autocomplete="username" placeholder="e.g. annareads" />
+          </div>
+
+          <div class="field user-auth-email-field" id="user-auth-email-field">
+            <label for="user-auth-email">Email address</label>
+            <input id="user-auth-email" type="email" autocomplete="email" placeholder="reader@example.com" />
+          </div>
+
+          <div class="field user-auth-phone-field" id="user-auth-phone-field">
+            <label for="user-auth-phone">Phone number</label>
+            <input id="user-auth-phone" type="tel" autocomplete="tel" placeholder="e.g. 0712345678" />
+          </div>
+
+          <div class="field user-auth-identifier-field" id="user-auth-identifier-field">
+            <label for="user-auth-identifier">Username or email</label>
+            <input id="user-auth-identifier" type="text" autocomplete="username" placeholder="Enter your username or email" />
+          </div>
+
+          <div class="field user-auth-password-field">
+            <label for="user-auth-password" id="user-auth-password-label">Password</label>
+            <input id="user-auth-password" type="password" autocomplete="current-password" placeholder="At least 6 characters" required />
+          </div>
+
+          <div class="field user-auth-confirm-field" id="user-auth-confirm-field">
+            <label for="user-auth-confirm-password">Confirm password</label>
+            <input id="user-auth-confirm-password" type="password" autocomplete="new-password" placeholder="Re-enter your password" />
+          </div>
+
+          <div class="terms-box auth-terms-box" id="user-auth-terms-box">
+            <p><strong>Library Terms & Conditions</strong></p>
+            <ul>
+              <li>Borrowed books must be returned on or before the agreed date.</li>
+              <li>Late returns may incur fines and delayed notifications.</li>
+              <li>Books are borrowed in the condition stated at issue; damage or loss may result in replacement costs.</li>
+              <li>Misplaced or unreturned books must be reported immediately and may require recovery fees.</li>
+              <li>Donations are welcome and may be added to the library collection only after review by the admin.</li>
+            </ul>
+          </div>
+
+          <label class="terms-checkbox auth-terms-checkbox" for="user-auth-terms" id="user-auth-terms-label">
+            <input id="user-auth-terms" type="checkbox" />
+            <span>I agree to the library terms and conditions.</span>
+          </label>
+
+          <button class="btn btn-orange auth-submit" id="user-auth-submit" type="submit">Log in</button>
+        </form>
+
+        <button class="auth-link" id="user-forgot-password-link" type="button">Forgot password?</button>
+
+        <p class="auth-note" id="user-auth-note">Create your account to access the library.</p>
+        <p class="auth-error" id="user-auth-error" role="alert"></p>
+      </div>
+    </section>
+
+    <div class="user-shell" id="user-app-shell">
+      <header class="user-topbar">
+        <div class="user-brand">
+          <div class="user-brand-mark">
+            <img src="library-logo.svg" alt="Library logo" />
+          </div>
+          <div>
+            <div class="auth-kicker">My library</div>
+            <h1>Reader Dashboard</h1>
+          </div>
+        </div>
+
+        <div class="user-userchip">
+          <div class="avatar" id="reader-initials">U</div>
+          <span id="reader-name">User</span>
+          <button class="btn btn-outline btn-sm" id="reader-profile-button" type="button"><i class="fa-solid fa-user-pen"></i> Edit profile</button>
+          <button class="btn btn-outline btn-sm" id="reader-logout-button" type="button"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </header>
+
+      <nav class="user-nav" aria-label="Reader pages">
+        <button class="user-nav-btn active" type="button" data-user-page="home"><i class="fa-solid fa-house"></i> Home</button>
+        <button class="user-nav-btn" type="button" data-user-page="history"><i class="fa-solid fa-book-open-reader"></i> Borrow History</button>
+        <button class="user-nav-btn" type="button" data-user-page="contacts"><i class="fa-solid fa-headset"></i> Contact Admin</button>
+      </nav>
+
+      <section class="user-page active" id="user-home-page">
+        <section class="user-hero">
+          <div class="user-hero-copy">
+            <div class="user-hero-badge">Reading Corner</div>
+            <h2 id="user-hero-quote">“The more that you read, the more things you will know.”</h2>
+            <p id="user-hero-author">— Dr. Seuss</p>
+          </div>
+          <div class="user-hero-cover">
+            <img id="user-hero-image" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=80" alt="Featured library image" />
+          </div>
+        </section>
+
+        <section class="user-stats">
+          <div class="user-card stat-card">
+            <div class="user-card-body">
+              <div class="label"><i class="fa-solid fa-book"></i> Total Books</div>
+              <div class="value" id="total-books">0</div>
+            </div>
+          </div>
+          <div class="user-card stat-card">
+            <div class="user-card-body">
+              <div class="label"><i class="fa-solid fa-check-circle"></i> Available</div>
+              <div class="value" id="available-books">0</div>
+            </div>
+          </div>
+          <div class="user-card stat-card">
+            <div class="user-card-body">
+              <div class="label"><i class="fa-solid fa-hand-holding-book"></i> Borrowed</div>
+              <div class="value" id="borrowed-books">0</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="user-card">
+          <div class="user-card-body">
+            <div class="section-head" style="margin:0 0 16px;">
+              <h2>Available books</h2>
+              <input class="search-box" id="reader-search" type="text" placeholder="Search books by title..." />
+            </div>
+            <div class="book-grid" id="book-grid"></div>
+          </div>
+        </section>
+
+        <section class="borrow-form">
+          <h2><i class="fa-solid fa-book-medical"></i> Borrow a book</h2>
+
+          <div class="field-row" style="margin-top: 12px;">
+            <div class="field" style="flex: 2;">
+              <label for="borrow-book-select">Choose a book</label>
+              <select id="borrow-book-select"></select>
+            </div>
+            <div class="field" style="flex: 1; min-width: 180px;">
+              <label for="borrow-date">Expected return</label>
+              <input id="borrow-date" type="date" />
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; margin-top: 14px;">
+            <button class="btn btn-orange" type="button" id="borrow-button">Borrow book</button>
+          </div>
+          <div class="status-text" id="borrow-status"></div>
+        </section>
+      </section>
+
+      <section class="user-page" id="user-history-page">
+        <section class="user-history user-card">
+          <div class="user-card-body">
+            <h2>Your borrow history</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Book</th>
+                    <th>Issued</th>
+                    <th>Expected</th>
+                    <th>Status</th>
+                    <th>Fine</th>
+                  </tr>
+                </thead>
+                <tbody id="borrow-history-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="user-page" id="user-contact-page">
+        <div class="contact-page-hero">
+          <h1>Contact the Library Admin</h1>
+          <p>Need help, want to report a problem, or have a question? We are ready to listen.</p>
+        </div>
+
+        <div class="contact-layout">
+          <section class="contact-form-panel">
+            <h2>Send an issue to the admin</h2>
+            <p class="contact-intro">Share the problem you are facing and the admin will review it quickly.</p>
+
+            <form class="contact-form" id="contact-issue-form">
+              <div class="field">
+                <label for="contact-name">Your Name</label>
+                <input id="contact-name" type="text" placeholder="Enter your full name" />
+              </div>
+
+              <div class="field">
+                <label for="contact-email">Your Email</label>
+                <input id="contact-email" type="email" placeholder="Enter your email address" />
+              </div>
+
+              <div class="field">
+                <label for="contact-topic">Issue Topic</label>
+                <select id="contact-topic">
+                  <option value="Borrowing issue">Borrowing issue</option>
+                  <option value="Book availability">Book availability</option>
+                  <option value="Account problem">Account problem</option>
+                  <option value="Return or fine question">Return or fine question</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="contact-message">Tell us how we can help</label>
+                <textarea id="contact-message" rows="5" placeholder="Describe the issue or question you want to raise"></textarea>
+              </div>
+
+              <button class="btn btn-orange contact-submit" type="submit">Send to Admin</button>
+              <div class="status-text" id="contact-status" aria-live="polite"></div>
+            </form>
+          </section>
+
+          <aside class="contact-side-panel">
+            <div class="contact-details-card">
+              <h3>Communication Channels</h3>
+
+              <div class="contact-detail-item">
+                <div class="detail-icon"><i class="fa-brands fa-instagram"></i></div>
+                <div>
+                  <strong>Instagram</strong>
+                  <p>@mylibraryke</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="detail-icon"><i class="fa-solid fa-phone"></i></div>
+                <div>
+                  <strong>Phone</strong>
+                  <p>+254 797405086</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="detail-icon"><i class="fa-solid fa-envelope"></i></div>
+                <div>
+                  <strong>Email</strong>
+                  <p>admin@library.com</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="detail-icon"><i class="fa-brands fa-x-twitter"></i></div>
+                <div>
+                  <strong>X</strong>
+                  <p>@mylibrary_ke</p>
+                </div>
+              </div>
+
+              <div class="contact-detail-item">
+                <div class="detail-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                <div>
+                  <strong>WhatsApp</strong>
+                  <p>+254 797405068</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-help-card">
+              <h3>Who Can Reach Us?</h3>
+              <ul>
+                <li><i class="fa-solid fa-circle-check"></i> Readers needing support with borrowing or returns</li>
+                <li><i class="fa-solid fa-circle-check"></i> Students reporting account or access issues</li>
+                <li><i class="fa-solid fa-circle-check"></i> Anyone who wants to ask a question directly to the admin</li>
+              </ul>
+            </div>
+
+            <div class="contact-links-row">
+              <a class="mini-link" href="https://www.instagram.com/nam_an.o/" target="_blank" rel="noreferrer"><i class="fa-brands fa-instagram"></i> Instagram</a>
+              <a class="mini-link" href="mailto:admin@library.com"><i class="fa-solid fa-envelope"></i> Email</a>
+              <a class="mini-link" href="tel:+254797405086"><i class="fa-solid fa-phone"></i> Phone</a>
+              <a class="mini-link" href="https://x.com" target="_blank" rel="noreferrer"><i class="fa-brands fa-x-twitter"></i> X</a>
+              <a class="mini-link accent" href="https://wa.me/254797405068" target="_blank" rel="noreferrer"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+            </div>
+          </aside>
+        </div>
+
+        <div class="user-notifications-panel">
+          <div class="user-notifications-header">
+            <h3>Admin notifications</h3>
+            <span class="notification-badge" id="user-notification-count">0</span>
+          </div>
+          <div id="user-notification-list" class="user-notification-list"></div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="site-footer">
+      <p>© 2026 My Library. All rights reserved.</p>
+    </footer>
+
+    <div class="profile-modal" id="profile-modal" aria-modal="true" role="dialog">
+      <div class="profile-modal-content">
+        <h3>Edit profile</h3>
+        <div class="profile-preview" id="profile-preview-box">
+          <span id="profile-preview-text">U</span>
+        </div>
+
+        <div class="field">
+          <label for="profile-name">Full name</label>
+          <input id="profile-name" type="text" placeholder="Full name" />
+        </div>
+        <div class="field">
+          <label for="profile-username">Username</label>
+          <input id="profile-username" type="text" placeholder="Username" />
+        </div>
+        <div class="field">
+          <label for="profile-email">Email</label>
+          <input id="profile-email" type="email" placeholder="Email" />
+        </div>
+        <div class="field">
+          <label for="profile-phone">Phone</label>
+          <input id="profile-phone" type="tel" placeholder="Phone" />
+        </div>
+        <div class="field">
+          <label for="profile-image-input">Profile image</label>
+          <input id="profile-image-input" type="file" accept="image/*" />
+        </div>
+
+        <div class="profile-modal-actions">
+          <button class="btn btn-outline" type="button" id="profile-cancel-button">Cancel</button>
+          <button class="btn btn-orange" type="button" id="profile-save-button">Save profile</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="user.js"></script>
+  </body>
+</html>

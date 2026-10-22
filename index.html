@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Library — Dashboard</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<section class="auth-screen" id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo" aria-label="My Library logo">
+      <img src="library-logo.svg" alt="My Library logo">
+    </div>
+    <div class="auth-heading">
+      <span class="auth-kicker">My library</span>
+      <h1 id="auth-title">Welcome back</h1>
+      <p id="auth-subtitle">Sign in to manage your books and borrowings.</p>
+    </div>
+    <div class="auth-tabs" role="tablist" aria-label="Account access">
+      <button class="auth-tab active" id="login-tab" type="button" onclick="setAuthMode('login')">Log in</button>
+      <button class="auth-tab" id="create-tab" type="button" onclick="setAuthMode('create')">Create account</button>
+    </div>
+    <form id="auth-form" onsubmit="submitAuth(event)">
+      <div class="field auth-name-field" id="auth-name-field">
+        <label for="auth-name">Owner name</label>
+        <input id="auth-name" type="text" autocomplete="name" placeholder="e.g. Julius Metto">
+      </div>
+      <div class="field auth-username-field" id="auth-username-field">
+        <label for="auth-username">Username</label>
+        <input id="auth-username" type="text" autocomplete="username" placeholder="e.g. juliusmetto">
+      </div>
+      <div class="field auth-email-field" id="auth-email-field">
+        <label for="auth-email">Email address</label>
+        <input id="auth-email" type="email" autocomplete="email" placeholder="owner@example.com">
+      </div>
+      <div class="field auth-phone-field" id="auth-phone-field">
+        <label for="auth-phone">Phone number</label>
+        <input id="auth-phone" type="tel" autocomplete="tel" placeholder="e.g. 08012345678">
+      </div>
+      <div class="field auth-identifier-field" id="auth-identifier-field">
+        <label for="auth-identifier">Username, email, or phone</label>
+        <input id="auth-identifier" type="text" autocomplete="username" placeholder="Enter your username, email, or phone">
+      </div>
+      <div class="field auth-password-field">
+        <label for="auth-password" id="auth-password-label">Password</label>
+        <input id="auth-password" type="password" autocomplete="current-password" placeholder="At least 6 characters" required>
+      </div>
+      <div class="field auth-confirm-field" id="auth-confirm-field">
+        <label for="auth-confirm-password">Confirm password</label>
+        <input id="auth-confirm-password" type="password" autocomplete="new-password" placeholder="Re-enter your password">
+      </div>
+
+      <button class="btn btn-orange auth-submit" id="auth-submit" type="submit">Log in</button>
+    </form>
+    <p class="auth-note" id="auth-note">Your account is stored locally on this device.</p>
+    <p class="auth-error" id="auth-error" role="alert"></p>
+  </div>
+</section>
+
+<div class="app" id="app">
+  <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark" aria-label="Library logo">
+        <img src="library-logo.svg" alt="My Library logo">
+      </div>
+      <div class="brand-text">
+        <div class="role">Admin</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="active" data-view="dashboard" onclick="switchView('dashboard', this)"><span class="icon">⌂</span> Home</button>
+      <button data-view="books" onclick="switchView('books', this)"><span class="icon">📚</span> Books</button>
+      <button data-view="borrowings" onclick="switchView('borrowings', this)"><span class="icon">↺</span> Borrowings</button>
+      <button data-view="contact" onclick="switchView('contact', this)"><span class="icon">✉</span> Contact</button>
+      <div class="spacer"></div>
+      <button class="logout" onclick="logout()"><span class="icon">⏻</span> Logout</button>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="openSidebar()">☰</button>
+        <h1 id="page-title">Dashboard</h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <input class="search-box" id="global-search" type="text" placeholder="Search books by title..." oninput="onGlobalSearch(this.value)">
+        <div class="profile">
+          <div class="avatar" id="owner-initials">JM</div>
+          <div class="profile-text">
+            <div class="name" id="owner-name-display">JULIUS METTO</div>
+            <div class="role">Owner</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="view active" id="view-dashboard">
+      <div class="rec-card">
+        <div class="rec-info">
+          <span class="rec-badge">Recommended Today</span>
+          <h2 id="rec-title">Secret War</h2>
+          <p id="rec-desc">Historical account</p>
+        </div>
+        <div class="rec-cover" id="rec-cover" aria-label="Book cover slideshow"></div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="label">Total Books</div><div class="value" id="stat-total">0</div></div>
+        <div class="stat borrowed"><div class="label">Borrowed</div><div class="value" id="stat-borrowed">0</div></div>
+        <div class="stat available"><div class="label">Available</div><div class="value" id="stat-available">0</div></div>
+        <div class="stat"><div class="label">Returned</div><div class="value" id="stat-returned">0</div></div>
+        <div class="stat notreturned"><div class="label">Not Returned</div><div class="value" id="stat-notreturned">0</div></div>
+      </div>
+
+      <div class="panels">
+        <div class="panel">
+          <h3>Recently Added</h3>
+          <ul id="recently-added-list"></ul>
+        </div>
+        <div class="panel">
+          <h3>Recently Borrowed</h3>
+          <ul id="recently-borrowed-list"></ul>
+        </div>
+        <div class="panel">
+          <h3>Library Owner</h3>
+          <div class="owner-row">
+            <div class="owner-avatar" id="owner-avatar-box">owner</div>
+            <div class="owner-info">
+              <div class="oname" id="owner-name">JULIUS METTO</div>
+              <div class="ousername" id="owner-username">@juliusmetto</div>
+              <div class="olib" id="owner-lib">My Personal Library</div>
+              <div class="obio" id="owner-bio">A small collection of fiction and nonfiction I love.</div>
+              <button class="btn btn-outline btn-sm" onclick="openOwnerModal()">Edit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div class="toolbar" style="margin:0;">
+          <select id="sort-select" onchange="renderBooks()">
+            <option value="az">A–Z</option>
+            <option value="za">Z–A</option>
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
+          <input type="text" id="book-search" placeholder="Search by title or number" oninput="renderBooks()">
+        </div>
+        <button class="btn btn-orange" onclick="openBookModal()">+ Add Book</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Book #</th><th>Title</th><th>Condition</th><th>Availability</th><th>Date Added</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="books-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="section-head">
+        <div class="toolbar" style="margin:0;">
+          <input type="text" id="borrow-search" placeholder="Search borrower, book, or phone" oninput="renderBorrowings()">
+        </div>
+        <button class="btn btn-orange" onclick="openBorrowModal()">Borrow Book</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Borrower</th><th>Phone</th><th>Book</th><th>Book #</th><th>Issued</th><th>Expected</th><th>Actual</th><th>Status</th><th>Condition</th><th>Fine</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="borrowings-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="view" id="view-books">
+      <div class="section-head">
+        <h2>All Books</h2>
+        <button class="btn btn-orange" onclick="openBookModal()">+ Add Book</button>
+      </div>
+      <div class="toolbar">
+        <select id="sort-select-2" onchange="renderBooks()">
+          <option value="az">A–Z</option>
+          <option value="za">Z–A</option>
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+        </select>
+        <input type="text" id="book-search-2" placeholder="Search by title or number" oninput="renderBooks()">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Book #</th><th>Title</th><th>Condition</th><th>Availability</th><th>Date Added</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="books-tbody-2"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="view" id="view-borrowings">
+      <div class="section-head">
+        <h2>All Borrowings</h2>
+        <button class="btn btn-orange" onclick="openBorrowModal()">Borrow Book</button>
+      </div>
+      <div class="toolbar">
+        <input type="text" id="borrow-search-2" placeholder="Search borrower, book, or phone" oninput="renderBorrowings()">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Borrower</th><th>Phone</th><th>Book</th><th>Book #</th><th>Issued</th><th>Expected</th><th>Actual</th><th>Status</th><th>Condition</th><th>Fine</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="borrowings-tbody-2"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="modal-backdrop" id="book-modal">
+  <div class="modal">
+    <h3>Add Book</h3>
+    <div class="field"><label>Title</label><input type="text" id="nb-title" placeholder="e.g. The Alchemist"></div>
+    <div class="field"><label>Condition</label>
+      <select id="nb-condition">
+        <option>Good Condition</option>
+        <option>Fair Condition</option>
+        <option>Bad Condition</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('book-modal')">Cancel</button>
+      <button class="btn btn-orange" onclick="addBook()">Add Book</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="borrow-modal">
+  <div class="modal">
+    <h3>Borrow Book</h3>
+    <div class="field"><label>Borrower Name</label><input type="text" id="bw-name" placeholder="e.g. Ana Roy"></div>
+    <div class="field"><label>Phone Number</label><input type="text" id="bw-phone" placeholder="e.g. 08012345678"></div>
+    <div class="field"><label>Book</label><select id="bw-book"></select></div>
+    <div class="field"><label>Expected Return Date</label><input type="date" id="bw-expected"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('borrow-modal')">Cancel</button>
+      <button class="btn btn-orange" onclick="addBorrowing()">Confirm Borrow</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="return-modal">
+  <div class="modal">
+    <h3>Return Book</h3>
+    <div class="field"><label>Returned Condition</label>
+      <select id="rt-condition">
+        <option>Good Condition</option>
+        <option>Fair Condition</option>
+        <option>Bad Condition</option>
+      </select>
+    </div>
+    <div class="field"><label>Fine (optional)</label><input type="number" id="rt-fine" min="0" value="0"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('return-modal')">Cancel</button>
+      <button class="btn btn-orange" onclick="confirmReturn()">Mark Returned</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="owner-modal">
+  <div class="modal">
+    <h3>Edit Library Owner</h3>
+    <div class="field"><label>Name</label><input type="text" id="ow-name"></div>
+    <div class="field"><label>Library Name</label><input type="text" id="ow-lib"></div>
+    <div class="field"><label>Bio</label><input type="text" id="ow-bio"></div>
+    <div class="field">
+      <label>Profile Image</label>
+      <input type="file" id="ow-profile-upload" accept="image/*">
+    </div>
+    <div class="field">
+      <label>Hero Book Cover</label>
+      <input type="file" id="ow-cover-upload" accept="image/*" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('owner-modal')">Cancel</button>
+      <button class="btn btn-orange" onclick="saveOwner()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
