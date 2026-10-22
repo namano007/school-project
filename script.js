@@ -338,20 +338,60 @@ function renderAdminContactCenter() {
   const inbox = document.getElementById('admin-inbox-list');
   const sentList = document.getElementById('admin-notifications-list');
 
-  const readerNotifications = readNotifications(ADMIN_NOTIFICATIONS_KEY)
+  const seededReaderNotifications = [
+    {
+      id: 'reader-1',
+      title: 'Borrowing issue from Naamaan Koech',
+      sender: 'Naamaan Koech',
+      detail: 'improve borrowing',
+      email: 'naamankoech4@gmail.com',
+      createdAt: '2026-09-24T00:00:00Z'
+    },
+    {
+      id: 'reader-2',
+      title: 'Other from Naamaan Koech',
+      sender: 'Naamaan Koech',
+      detail: 'I suggest you add game of thrones to your library',
+      email: 'naamankoech4@gmail.com',
+      createdAt: '2026-09-23T00:00:00Z'
+    }
+  ];
+
+  const seededSentNotifications = [
+    {
+      id: 'sent-1',
+      subject: 'Payment reminder',
+      recipient: 'nmqcva vdic',
+      message: 'M-Pesa payment request sent to +254797405068. PAYMENT REQUEST: Please pay KSh 120 for the library charge using M-Pesa to +254797405068. Thank you.',
+      createdAt: '2026-09-24T00:00:00Z'
+    }
+  ];
+
+  const storedReaderNotifications = readNotifications(ADMIN_NOTIFICATIONS_KEY);
+  const storedSentNotifications = readNotifications(ADMIN_SENT_NOTIFICATIONS_KEY);
+
+  const readerNotifications = (storedReaderNotifications.length ? storedReaderNotifications : seededReaderNotifications)
     .map((item) => ({
       id: item.id || cryptoRandomId(),
       title: item.title || item.topic || 'Reader notification',
       sender: item.sender || 'Reader',
-      detail: item.message || '',
+      detail: item.message || item.detail || '',
       email: item.email || '',
       createdAt: item.createdAt || new Date().toISOString(),
       kind: 'reader'
     }))
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  const sentNotifications = readNotifications(ADMIN_SENT_NOTIFICATIONS_KEY)
+  const sentNotifications = (storedSentNotifications.length ? storedSentNotifications : seededSentNotifications)
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  if (!storedReaderNotifications.length) {
+    writeNotifications(ADMIN_NOTIFICATIONS_KEY, readerNotifications);
+  }
+
+  if (!storedSentNotifications.length) {
+    writeNotifications(ADMIN_SENT_NOTIFICATIONS_KEY, sentNotifications);
+  }
 
   if (inbox) {
     if (!readerNotifications.length) {
@@ -362,7 +402,7 @@ function renderAdminContactCenter() {
           <article class="message-item">
             <div class="message-head">
               <strong>${message.title}</strong>
-              <span>${new Date(message.createdAt).toLocaleDateString()}</span>
+              <span>${new Date(message.createdAt).toLocaleDateString('en-GB')}</span>
             </div>
             <div class="message-meta">From: ${message.sender}${message.email ? ` · ${message.email}` : ''}</div>
             <p>${message.detail}</p>
@@ -381,7 +421,7 @@ function renderAdminContactCenter() {
           <article class="notification-item">
             <div class="message-head">
               <strong>${notification.subject || 'Notification'}</strong>
-              <span>${new Date(notification.createdAt).toLocaleDateString()}</span>
+              <span>${new Date(notification.createdAt).toLocaleDateString('en-GB')}</span>
             </div>
             <div class="message-meta">To: ${notification.recipient || 'All readers'}</div>
             <p>${notification.message || ''}</p>

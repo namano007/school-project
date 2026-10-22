@@ -230,6 +230,78 @@
       </div>
     </section>
 
+    <section class="view" id="view-contact">
+      <div class="section-head" style="margin-bottom:18px;">
+        <h2>Contact Center</h2>
+      </div>
+
+      <div class="contact-view-grid">
+        <div class="contact-panel">
+          <div class="panel-header">
+            <h3>Messages from readers</h3>
+          </div>
+          <div class="message-list" id="admin-inbox-list">
+            <article class="message-item">
+              <div class="message-head">
+                <strong>Borrowing issue from Naamaan Koech</strong>
+                <span>24/09/2026</span>
+              </div>
+              <div class="message-meta">From: Naamaan Koech · naamankoech4@gmail.com</div>
+              <p>improve borrowing</p>
+            </article>
+            <article class="message-item">
+              <div class="message-head">
+                <strong>Other from Naamaan Koech</strong>
+                <span>23/09/2026</span>
+              </div>
+              <div class="message-meta">From: Naamaan Koech · naamankoech4@gmail.com</div>
+              <p>I suggest you add game of thrones to your library</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="contact-panel">
+          <div class="panel-header">
+            <h3>Send notification</h3>
+          </div>
+          <form class="admin-contact-form" onsubmit="event.preventDefault(); showToast('Notification sent.');">
+            <div class="field">
+              <label for="admin-recipient">Send to</label>
+              <input id="admin-recipient" type="text" value="All readers" readonly>
+            </div>
+
+            <div class="field">
+              <label for="admin-subject">Subject</label>
+              <input id="admin-subject" type="text" placeholder="e.g. Return reminder">
+            </div>
+
+            <div class="field">
+              <label for="admin-message">Message</label>
+              <textarea id="admin-message" placeholder="Write the update or reminder for the user"></textarea>
+            </div>
+
+            <button class="btn btn-orange" type="submit">Send notification</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="contact-panel notifications-panel">
+        <div class="panel-header">
+          <h3>Notifications sent</h3>
+        </div>
+        <div class="notification-list" id="admin-notifications-list">
+          <article class="notification-item">
+            <div class="message-head">
+              <strong>Payment reminder</strong>
+              <span>24/09/2026</span>
+            </div>
+            <div class="message-meta">To: nmqcva vdic</div>
+            <p>M-Pesa payment request sent to +254797405068. PAYMENT REQUEST: Please pay KSh 120 for the library charge using M-Pesa to +254797405068. Thank you.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
   </main>
 </div>
 
